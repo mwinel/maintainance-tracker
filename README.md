@@ -12,7 +12,7 @@ Track user requests...
 Clone the repo from GitHub:
 
 ```
-https://github.com/mwinel/requests-tracker.git
+https://github.com/mwinel/maintainance-tracker.git
 cd requests-tracker
 ```
 
