@@ -9,8 +9,8 @@ class UserRegistration(Resource):
 		parser.add_argument('username', required = True)
 		parser.add_argument('email', required = True)
 		parser.add_argument('password', required = True)
+		
 		data = parser.parse_args()
-
 		username = data['username']
 		email = data['email']
 
@@ -40,10 +40,21 @@ class UserRegistration(Resource):
 class UserLogin(Resource):
 	# Call the method to login a user.
 	def post(self):
+		parser = reqparse.RequestParser()
 		parser.add_argument('username', required = True)
 		parser.add_argument('password', required = True)
+
 		data = parser.parse_args()
-		return data
+		username = data['username']
+		password = data['password']
+		for user in User.users:
+			if username == user['username'] and password == user['password']:
+				return {
+					'message': 'Logged in as {}'.format(data['username'])
+				}, 200
+		return {
+			'message': 'Something went wrong'
+		}, 500
 
 
 class UserLogoutAccess(Resource):
@@ -68,12 +79,10 @@ class GetUsers(Resource):
 	def get(self):
 		return User.getUsers()
 
-
 class GetUser(Resource):
 	# Call method to return all users.
 	def get(self, id):
 		return User.getUser(id)
-
 
 class SecretResource(Resource):
 	def get(self):
