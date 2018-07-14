@@ -1,4 +1,4 @@
-# maintainance-tracker api
+# maintainance-tracker api  [![Build Status](https://travis-ci.org/mwinel/maintainance-tracker.svg?branch=master)](https://travis-ci.org/mwinel/maintainance-tracker)
 
 Track user requests...
 
