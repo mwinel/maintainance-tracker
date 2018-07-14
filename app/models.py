@@ -8,7 +8,7 @@ class User:
 			'id': 1,
 			'username': u'mwinel',
 			'email': u'mwinel@example.com',
-			'password': u'123456'
+			'password': u'code618'
 		},
 		{
 			'id': 2,
