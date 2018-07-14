@@ -1,4 +1,4 @@
-# maintainance-tracker api  [![Build Status](https://travis-ci.org/mwinel/maintainance-tracker.svg?branch=master)](https://travis-ci.org/mwinel/maintainance-tracker)
+# maintainance-tracker api  [![Build Status](https://travis-ci.org/mwinel/maintainance-tracker.svg?branch=master)](https://travis-ci.org/mwinel/maintainance-tracker)  [![Coverage Status](https://coveralls.io/repos/github/mwinel/maintainance-tracker/badge.svg)](https://coveralls.io/github/mwinel/maintainance-tracker)
 
 Track user requests...
 
