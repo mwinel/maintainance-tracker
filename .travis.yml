@@ -9,8 +9,7 @@ install:
 
 # command to run tests
 script: 
-  - python manage.py cov_test
-  - python manage.py cover
+  - python -m unittest tests.py
 
 after_success:
   - coveralls
