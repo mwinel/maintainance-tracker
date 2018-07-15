@@ -67,23 +67,19 @@ class UserLogin(Resource):
 			'message': 'Something went wrong'
 		}, 500
 
-
 class UserLogoutAccess(Resource):
 	def post(self):
 		return {'message': 'User logout'}
-
 
 class UserLogoutRefresh(Resource):
 	# Call the method to access token to logout.
 	def post(self):
 		return {'message': 'User logout'}
 
-
 class TokenRefresh(Resource):
 	# Call the method to refresh token to logout.
 	def post(self):
 		return {'message': 'Refresh token'}
-
 
 class GetUsers(Resource):
 	# Call method to return all users.
