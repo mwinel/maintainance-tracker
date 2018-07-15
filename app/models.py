@@ -47,3 +47,25 @@ class User:
 		if not user:
 			return {'message': 'User not found'}
 		return {'user': user[0]}, 200
+
+class Request:
+	""" This class provides a way to store requests data. """
+
+	requests = [
+		{
+			'id': 1,
+			'title': u'request 1',
+			'description': u'Track maintainance'
+		},
+		{
+			'id': 2,
+			'title': u'request 2',
+			'description': u'Track repairs'
+		}
+	]
+
+	def __init__(self, id, title, description):
+		""" Initialize objects. """
+		self.id = id,
+		self.title = title,
+		self.description = description
