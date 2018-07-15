@@ -1,4 +1,7 @@
 from flask_restful import Resource, reqparse
+from flask_jwt_extended import (create_access_token, 
+	create_refresh_token, jwt_required, jwt_refresh_token_required, 
+	get_jwt_identity, get_raw_jwt)
 from app import create_app
 from app.models import User
 
@@ -29,11 +32,15 @@ class UserRegistration(Resource):
 			"id": User.users[-1]['id'] + 1,
 			"username": data["username"],
 			"email": data["email"],
-			"password": data["password"]
+			"password": User.generate_hash(data["password"])
 		}
 		User.users.append(user)
+		access_token = create_access_token(identity = data['username'])
+		refresh_token = create_refresh_token(identity = data['username'])
 		return {
-			'message': 'User successfully created'
+			'message': 'User successfully created',
+			'access token': access_token,
+			'refresh token': refresh_token
 		}, 201
 
 
@@ -48,9 +55,13 @@ class UserLogin(Resource):
 		username = data['username']
 		password = data['password']
 		for user in User.users:
-			if username == user['username'] and password == user['password']:
+			if password == User.verify_hash(data['password'], hash):
+				# access_token = create_access_token(identity = data['username'])
+				# refresh_token = create_refresh_token(identity = data['username'])
 				return {
-					'message': 'Logged in as {}'.format(data['username'])
+					'message': 'Logged in as {}'.format(data['username']),
+					# 'access token': access_token.decode('utf-8'),
+					# 'refresh token': refresh_token.decode('utf-8')
 				}, 200
 		return {
 			'message': 'Something went wrong'
@@ -85,6 +96,7 @@ class GetUser(Resource):
 		return User.getUser(id)
 
 class SecretResource(Resource):
+	@jwt_required
 	def get(self):
 		return {
 			'message': 618
