@@ -1,5 +1,6 @@
-# Create classes to store data.
+from passlib.hash import pbkdf2_sha256
 
+# Create classes to store data.
 class User:
 	""" This class provides a way to store user data. """
 
@@ -24,6 +25,18 @@ class User:
 		self.username = username,
 		self.email = email,
 		self.password = password
+
+	@staticmethod
+	# Generate a hashed string to be
+	# stored by our class model.
+	def generate_hash(password):
+		hash = pbkdf2_sha256.encrypt(password, rounds = 20000, salt_size = 16)
+		return hash
+
+	@staticmethod
+	# Check a given password.
+	def verify_hash(password, hash):
+		return pbkdf2_sha256.verify(password, hash)
 
 	def getUsers():
 		""" Method to return a list of users. """
