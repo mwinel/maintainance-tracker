@@ -43,7 +43,6 @@ class UserRegistration(Resource):
 			'refresh token': refresh_token
 		}, 201
 
-
 class UserLogin(Resource):
 	# Call the method to login a user.
 	def post(self):
