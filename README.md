@@ -57,7 +57,7 @@ Date: Sun, 27 May 2018 11:06:36 GMT
 Server: Werkzeug/0.14.1 Python/3.6.5
 
 {
-    "message": "Hello World"
+    "message": "Maintainance Tracker."
 }
 
 ```
