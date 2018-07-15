@@ -26,7 +26,7 @@ venv\Scripts\activate => for windows
 ## Requirements
 
 ```
-pip install -r requirements
+pip install -r requirements.txt
 ```
 
 ## Set enviroment variables
