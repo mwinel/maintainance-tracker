@@ -9,7 +9,7 @@ jwt = JWTManager()
 def create_app(config_class):
 	app = Flask(__name__)
 	app.config.from_object(app_config[config_class])
-	app.config['JWT_SECRET_KEY'] = "jwt-secret-string"
+	app.config['JWT_SECRET_KEY'] = "tPXJY3X37Qybz4QykV+hOyUxVQeEXf1Ao2C8upz+fGQXKsM"
 	api = Api(app)
 	jwt = JWTManager(app)
 
