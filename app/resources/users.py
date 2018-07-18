@@ -1,3 +1,4 @@
+from passlib.hash import pbkdf2_sha256
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import (create_access_token, 
 	create_refresh_token, jwt_required, jwt_refresh_token_required, 
@@ -53,32 +54,63 @@ class UserLogin(Resource):
 		data = parser.parse_args()
 		username = data['username']
 		password = data['password']
-		for user in User.users:
-			if password == User.verify_hash(data['password'], hash):
-				# access_token = create_access_token(identity = data['username'])
-				# refresh_token = create_refresh_token(identity = data['username'])
-				return {
-					'message': 'Logged in as {}'.format(data['username']),
-					# 'access token': access_token.decode('utf-8'),
-					# 'refresh token': refresh_token.decode('utf-8')
-				}, 200
-		return {
-			'message': 'Something went wrong'
-		}, 500
+
+		current_user = User.get_user_by_username(data['username'], username)
+		if not current_user:
+			return {
+				'message': 'User {} doesn\'t exist'.format(data['username'])
+			}
+
+		if pbkdf2_sha256.verify(password, pbkdf2_sha256.hash(password)):
+			access_token = create_access_token(identity = data['username'])
+			refresh_token = create_refresh_token(identity = data['username'])
+			return {
+				'message': 'Logged in as {}'.format(data['username']),
+				'access token': access_token,
+				'refresh token': refresh_token
+			}
 
 class UserLogoutAccess(Resource):
+	@jwt_required
 	def post(self):
-		return {'message': 'User logout'}
+		jti = get_raw_jwt()['jti']
+		try:
+			revoked_token = RevokedToken(jti = jti)
+			return {
+				'message': 'Access token has been revoked'
+			}
+		except:
+			return {
+				'message': 'Something went wrong'
+			}, 500
 
 class UserLogoutRefresh(Resource):
-	# Call the method to access token to logout.
+	@jwt_refresh_token_required
 	def post(self):
-		return {'message': 'User logout'}
+		jti = get_raw_jwt()['jti']
+		try:
+			revoked_token = RevokedToken(jti = jti)
+			return {
+				'message': 'Refresh token has been revoked'
+			}
+		except:
+			return {
+				'message': 'Something went wrong'
+			}, 500
 
 class TokenRefresh(Resource):
-	# Call the method to refresh token to logout.
+	# Call the method to reissue a refresh token.
+	# You can only access this path using a refresh token.
+	@jwt_refresh_token_required
 	def post(self):
-		return {'message': 'Refresh token'}
+		# Identify user by extracting identity from refresh token.
+		current_user = get_jwt_identity()
+		# Use identity to return new access token 
+		# and return it to the user.
+		access_token = create_access_token(identity = current_user)
+		return {
+			'access_token': access_token
+		}
 
 class GetUsers(Resource):
 	# Call method to return all users.

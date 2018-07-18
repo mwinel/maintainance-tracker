@@ -15,13 +15,13 @@ class User:
 			'id': 2,
 			'username': u'lucy',
 			'email': u'lucy@example.com',
-			'password': u'123456'
+			'password': u'lava12'
 		}
 	]
 
 	def __init__(self, id, username, email, password):
-		""" Initialize objects. """
-		self.id = user_id,
+		""" Initialize user objects. """
+		self.id = id,
 		self.username = username,
 		self.email = email,
 		self.password = password
@@ -30,8 +30,7 @@ class User:
 	# Generate a hashed string to be
 	# stored by our class model.
 	def generate_hash(password):
-		hash = pbkdf2_sha256.encrypt(password, rounds = 20000, salt_size = 16)
-		return hash
+		return pbkdf2_sha256.encrypt(password, rounds = 20000, salt_size = 16)
 
 	@staticmethod
 	# Check a given password.
@@ -43,10 +42,34 @@ class User:
 		return User.users, 200
 
 	def getUser(id):
+		""" Method to return user by id. """
 		user = [user for user in User.users if user['id'] == id]
 		if not user:
 			return {'message': 'User not found'}
 		return {'user': user[0]}, 200
+
+	def get_user_by_username(self, username):
+		""" Method to return user by username. """
+		user = [x for x in User.users if x.get("username") == username]
+		if user:
+			return user[0]
+		return None
+
+class RevokedToken:
+	""" This class provides a way to store revoked token data. """
+
+	tokens = []
+
+    # Strore the token id and its unique identifier.
+	def __init__(id, jti):
+		self.id = id,
+		self.jti = jti
+
+	@classmethod
+	def is_jti_blacklisted(cls, jti):
+		""" Method to check if token is revoked. """
+		token = [x for x in tokens if x.get("jti") == jti]
+		return bool(token)
 
 class Request:
 	""" This class provides a way to store requests data. """
@@ -65,7 +88,7 @@ class Request:
 	]
 
 	def __init__(self, id, title, description):
-		""" Initialize objects. """
+		""" Initialize request objects. """
 		self.id = id,
 		self.title = title,
 		self.description = description
