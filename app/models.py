@@ -30,8 +30,7 @@ class User:
 	# Generate a hashed string to be
 	# stored by our class model.
 	def generate_hash(password):
-		hash = pbkdf2_sha256.encrypt(password, rounds = 20000, salt_size = 16)
-		return hash
+		return pbkdf2_sha256.encrypt(password, rounds = 20000, salt_size = 16)
 
 	@staticmethod
 	# Check a given password.
@@ -55,6 +54,22 @@ class User:
 		if user:
 			return user[0]
 		return None
+
+class RevokedToken:
+	""" This class provides a way to store revoked token data. """
+
+	tokens = []
+
+    # Strore the token id and its unique identifier.
+	def __init__(id, jti):
+		self.id = id,
+		self.jti = jti
+
+	@classmethod
+	def is_jti_blacklisted(cls, jti):
+		""" Method to check if token is revoked. """
+		token = [x for x in tokens if x.get("jti") == jti]
+		return bool(token)
 
 class Request:
 	""" This class provides a way to store requests data. """
